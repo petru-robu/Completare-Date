@@ -3,12 +3,16 @@ import tkinter as tk
 from fillpdf import fillpdfs
 from tkinter import messagebox
 
-pdf = 'forms/anexa_1_inregistrare_fiscala.pdf'
+input_path = 'forms/'
+output_path = 'filled-forms/'
+pdf = input_path + '11-10-141.pdf'
 
 class FormFiller:
     def __init__(self, pdf_path):
         self.path = pdf_path
-        self.output_path = pdf_path[:-4] + '-filled.pdf'
+        pdf_name = pdf_path[len(input_path):]
+
+        self.output_path = output_path + pdf_name[:-4] + '-filled.pdf'
         self.data_dict = dict()
 
     def view_fields(self):
@@ -23,7 +27,6 @@ class FormFiller:
     def identify_field(self, keyword):
         fields_dict = fillpdfs.get_form_fields(self.path)
         for field in fields_dict.keys():
-            print(field)
             if field.lower().find(keyword) != -1:
                 return field    
         return '-'
