@@ -1,11 +1,10 @@
 import tkinter as tk
-
+import os
 from fillpdf import fillpdfs
 from tkinter import messagebox
 
 input_path = 'forms/'
 output_path = 'filled-forms/'
-pdf = input_path + '11-10-141.pdf'
 
 class FormFiller:
     def __init__(self, pdf_path):
@@ -100,14 +99,15 @@ class Gui:
 if __name__ == '__main__':
     gui = Gui()
     gui.start()
-    form = FormFiller(pdf)
-
     info = gui.get_collected_data()
-    for entry in info:
-        fieldname = form.identify_field(entry)
-        if fieldname != '-':
-            form.change_field(fieldname, info[entry])
-        else:
-            print(f"Nu se gaseste casuta de completat ({entry})")
 
-    form.commit_changes()
+    for filename in os.listdir(input_path):
+        pdf = input_path + filename
+        form = FormFiller(pdf)
+        for entry in info:
+            fieldname = form.identify_field(entry)
+            if fieldname != '-':
+                form.change_field(fieldname, info[entry])
+            else:
+                print(f"Nu se gaseste casuta de completat ({entry})")
+        form.commit_changes()
